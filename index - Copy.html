@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Syed Muhammad Miraj | Video Editor</title>
+<meta name="description" content="Professional Video Editor specializing in AI UGC ads, social media videos and creative content."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --bg: #0f1b1f;
+  --bg2: #13242a;
+  --surface: #17292f;
+  --surface-hover: #1c333a;
+  --ink: #f1f5f2;
+  --text: #d6e2df;
+  --muted: #8fa5a3;
+  --accent: #f5a524;
+  --accent-dark: #d98a0b;
+  --accent2: #ff6b57;
+  --teal: #2dd4bf;
+  --on-accent: #1a1206;
+  --border: #25393f;
+  --shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+#mouseTrailCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+::selection { background: var(--accent); color: var(--on-accent); }
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  background: rgba(245,165,36,.10);
+  filter: blur(100px);
+  border-radius: 50%;
+  top: -200px;
+  right: -100px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: rgba(45,212,191,.09);
+  filter: blur(100px);
+  border-radius: 50%;
+  bottom: -180px;
+  left: -120px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* NAVIGATION */
+nav {
+  height: 78px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(15,27,31,.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg,#f5a524,#f97c3c,#ff6b57);
+  box-shadow: 0 12px 28px rgba(245,165,36,.22);
+  transition: .3s ease;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1206;
+}
+
+.logo:hover { transform: translateY(-2px) rotate(-3deg); }
+.nav-links { display: flex; gap: 34px; }
+
+.nav-links a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  transition: .25s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+.nav-button {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 25px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.nav-button:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* HERO */
+.hero {
+  min-height: calc(100vh - 78px);
+  padding: 100px 7%;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  align-items: center;
+  gap: 80px;
+}
+
+.hero-content { max-width: 760px; animation: heroIn .8s ease both; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 13px;
+  border-radius: 30px;
+  background: rgba(245,165,36,.12);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+}
+
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hero h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(55px,7vw,94px);
+  line-height: .98;
+  letter-spacing: -4px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.gradient, .section-heading span {
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  max-width: 650px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 34px;
+}
+
+.hero-description strong { color: var(--ink); }
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 13px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: .3s;
+}
+
+.btn-primary {
+  color: var(--on-accent);
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+}
+
+.btn-primary:hover, .btn-secondary:hover { transform: translateY(-3px); }
+
+.btn-secondary {
+  color: var(--ink);
+  border: 1px solid #35505a;
+  background: transparent;
+  cursor: pointer;
+}
+
+.social-links { display: flex; gap: 25px; margin-top: 28px; }
+.social-links a { color: var(--muted); font-size: 13px; }
+.social-links a:hover { color: var(--accent); }
+
+/* HERO VISUAL */
+.hero-visual {
+  min-height: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradient-orb {
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  position: absolute;
+  opacity: .16;
+  animation: float 6s ease-in-out infinite;
+}
+
+.visual-card {
+  width: min(430px,100%);
+  min-height: 440px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(23,41,47,.85);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  position: relative;
+}
+
+.visual-top, .visual-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visual-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.visual-status { font-size: 11px; color: #4ade80; }
+
+.video-screen {
+  height: 255px;
+  margin-top: 25px;
+  border-radius: 18px;
+  background: linear-gradient(135deg,#0a1215,#0f3a40 50%,#5a2a1e);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-screen::before {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,rgba(245,165,36,.9),rgba(255,107,87,.75));
+  filter: blur(5px);
+}
+
+.play-circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: white;
+  color: var(--accent-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: relative;
+}
+
+.timeline { display: flex; gap: 5px; margin-top: 18px; height: 7px; }
+.timeline span { height: 100%; border-radius: 5px; background: #2a4148; }
+.timeline span:nth-child(1) { width: 18%; background: var(--accent); }
+.timeline span:nth-child(2) { width: 28%; background: var(--teal); }
+.timeline span:nth-child(3) { width: 14%; background: var(--accent2); }
+.timeline span:nth-child(4) { width: 40%; }
+
+.visual-bottom { margin-top: 24px; }
+
+.visual-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.visual-subtitle { color: var(--muted); font-size: 12px; }
+
+.visual-number {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #2a4148;
+}
+
+/* GENERAL SECTIONS */
+section { padding: 110px 7%; border-top: 1px solid var(--border); }
+
+.section-label {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.section-heading {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(40px,5vw,68px);
+  line-height: 1.03;
+  letter-spacing: -2.5px;
+  color: var(--ink);
+  margin-top: 16px;
+}
+
+.section-intro {
+  max-width: 650px;
+  color: var(--muted);
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+  margin-top: 60px;
+}
+
+.about-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(35px,4vw,56px);
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.about-title span { color: var(--accent); }
+
+.about-text { color: var(--muted); font-size: 16px; line-height: 1.9; }
+.about-text p + p { margin-top: 20px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+  margin-top: 35px;
+}
+
+.stat {
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.stat strong { display: block; font-size: 25px; color: var(--ink); }
+.stat span { display: block; color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+/* SERVICES */
+.services-section { background: var(--bg2); }
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+  margin-top: 55px;
+}
+
+.service {
+  padding: 34px;
+  min-height: 310px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  transition: .35s;
+}
+
+.service:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
+.service-icon { font-size: 28px; margin-bottom: 50px; }
+
+.service h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 27px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.service p { color: var(--muted); font-size: 14px; line-height: 1.8; }
+
+/* PORTFOLIO */
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+}
+
+.portfolio-link { color: var(--accent); font-size: 13px; font-weight: 700; }
+
+.portfolio-category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 42px;
+}
+
+.portfolio-category-nav a {
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.portfolio-category-nav a:hover { border-color: var(--accent); color: var(--accent); }
+.portfolio-category-section { margin-bottom: 72px; scroll-margin-top: 100px; }
+
+.category-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-heading h3 { font-family: "Space Grotesk", sans-serif; color: var(--ink); }
+.category-heading span { font-size: 12px; color: var(--muted); }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 22px;
+  margin-top: 35px;
+}
+
+.project {
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: .35s;
+}
+
+.project:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+
+.project-preview {
+  height: 275px;
+  position: relative;
+  overflow: hidden;
+  background: #0a1215;
+}
+
+.portfolio-embed { width: 100%; height: 100%; border: 0; background: #0a1215; }
+
+.preview-number {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  z-index: 2;
+  color: white;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.project-info { padding: 28px; }
+
+.project-category {
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 1.7px;
+  font-weight: 700;
+}
+
+.project h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  color: var(--ink);
+  margin: 10px 0;
+}
+
+.project p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.watch-btn {
+  display: inline-flex;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(245,165,36,.12);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.watch-btn:hover { background: var(--accent); color: var(--on-accent); }
+
+/* WORKFLOW */
+.process-section { background: linear-gradient(135deg,#0f1b1f,#142a2f); }
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 15px;
+  margin-top: 55px;
+}
+
+.process {
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  min-height: 230px;
+}
+
+.process-number { color: var(--accent); font-size: 12px; }
+
+.process h3 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--ink);
+  font-size: 23px;
+  margin-top: 48px;
+  margin-bottom: 10px;
+}
+
+.process p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+/* CONTACT */
+.contact-section { padding: 90px 7%; }
+
+.contact-box {
+  padding: 70px;
+  border-radius: 28px;
+  background: linear-gradient(120deg,#13262c,#134e4a,#7c2d12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  box-shadow: var(--shadow);
+}
+
+.contact-label { color: #fcd34d; font-size: 11px; letter-spacing: 2px; font-weight: 700; }
+
+.contact-box h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(40px,5vw,65px);
+  line-height: 1;
+  margin-top: 15px;
+  color: white;
+}
+
+.contact-box h2 span { color: #fcd34d; }
+.contact-box p { color: #cbd9d6; margin-top: 18px; max-width: 550px; }
+
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 23px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contact-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.contact-email { color: #fde68a; font-size: 13px; }
+
+/* FOOTER */
+footer {
+  padding: 30px 7%;
+  border-top: 1px solid var(--border);
+  background: #0c171a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer strong { color: var(--ink); }
+.footer-links { display: flex; gap: 25px; }
+.footer-links a:hover { color: var(--accent); }
+
+/* SCROLL ANIMATIONS */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 2000;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg,var(--accent),var(--accent2),var(--teal));
+  pointer-events: none;
+}
+
+.js .reveal { opacity: 0; }
+.js .reveal.in { opacity: 1; animation: revealUp .8s cubic-bezier(.2,.8,.2,1) backwards; }
+.js .reveal.from-left.in { animation-name: revealLeft; }
+.js .reveal.from-scale.in { animation-name: revealScale; }
+
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes revealLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes revealScale {
+  from { opacity: 0; transform: scale(.94) translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* CHAT BOX CSS */
+.chat-window {
+  position: fixed;
+  right: 25px;
+  bottom: 95px;
+  z-index: 6001;
+  width: min(360px,calc(100vw - 30px));
+  background: #13242a;
+  border: 1px solid #35505a;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0,0,0,.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(15px) scale(.97);
+  transform-origin: bottom right;
+  transition: .25s ease;
+}
+
+.chat-window.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg,#1c333a,#134e4a);
+  color: #f1f5f2;
+}
+
+.chat-header strong { font-size: 17px; }
+.chat-header p { font-size: 12px; color: #a9c3bd; margin-top: 4px; }
+
+.chat-header button {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.chat-body { padding: 20px; min-height: 110px; }
+
+.chat-message {
+  background: #1c333a;
+  border: 1px solid #35505a;
+  color: #e2ece8;
+  padding: 14px;
+  border-radius: 5px 15px 15px 15px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.chat-form { display: grid; gap: 12px; padding: 0 20px 20px; }
+
+.chat-form input, .chat-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #35505a;
+  border-radius: 10px;
+  background: #0f1b1f;
+  color: #f1f5f2;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.chat-form input:focus, .chat-form textarea:focus { border-color: #f5a524; }
+.chat-form textarea { min-height: 85px; resize: vertical; }
+
+.chat-form button {
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#f5a524,#ff6b57);
+  color: #1a1206;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chat-toggle {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 6000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 22px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg,#f5a524,#ff6b57);
+  color: #1a1206;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 35px rgba(245,165,36,.3);
+  transition: .3s ease;
+}
+
+.chat-toggle:hover { transform: translateY(-4px); }
+.chat-icon { font-size: 20px; }
+
+@media (max-width:1000px) {
+  .hero { grid-template-columns: 1fr; gap: 70px; }
+  .service-grid, .process-grid { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width:800px) {
+  nav { padding: 0 5%; }
+  .nav-links { display: none; }
+  .hero { padding: 75px 5% 85px; }
+  .hero h1 { letter-spacing: -2.5px; }
+  section { padding: 85px 5%; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .service-grid, .portfolio-grid, .process-grid { grid-template-columns: 1fr; }
+  .portfolio-header { display: block; }
+  .contact-section { padding: 70px 5%; }
+  .contact-box { padding: 45px 30px; flex-direction: column; align-items: flex-start; }
+  footer { padding: 30px 5%; flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width:520px) {
+  .logo { width: 46px; height: 46px; }
+  .nav-button { padding: 9px 14px; }
+  .hero h1 { font-size: 53px; }
+  .hero-description { font-size: 16px; }
+  .visual-card { padding: 20px; min-height: 400px; }
+  .video-screen { height: 220px; }
+  .section-heading { font-size: 42px; }
+  .stats { grid-template-columns: 1fr; }
+  .project-preview { height: 230px; }
+  .contact-box h2 { font-size: 43px; }
+  .contact-button { width: 100%; }
+  .footer-links { flex-wrap: wrap; }
+  .chat-toggle { right: 15px; bottom: 15px; }
+  .chat-window { right: 15px; bottom: 82px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+  <!-- Mouse Trail Canvas Element -->
+<canvas id="mouseTrailCanvas"></canvas>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav>
+  <a class="logo" href="#home" aria-label="Home">SM</a>
+
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#process">Process</a>
+  </div>
+
+  <button class="nav-button" id="chatToggle" type="button"
+          aria-controls="chatWindow" aria-expanded="false">
+    Let's Talk
+  </button>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      VIDEO EDITOR · AI UGC
+    </div>
+
+    <h1>I turn raw <span class="gradient">footage</span> into stories.</h1>
+
+    <p class="hero-description">
+      I'm <strong>Zahoor ul Hassan</strong>, a creative video editor focused on
+      AI UGC ads, social media content and engaging visual storytelling.
+    </p>
+
+    <div class="hero-buttons">
+      <a class="btn btn-primary" href="#portfolio">Explore My Work ↗</a>
+      <button class="btn btn-secondary" type="button"
+              onclick="document.getElementById('chatToggle').click()">
+        Hire Me
+      </button>
+    </div>
+
+    <div class="social-links">
+      <a href="https://www.upwork.com/freelancers/~016a8138e328a71dc2"
+         target="_blank" rel="noopener">Upwork ↗</a>
+      <a href="https://www.linkedin.com/in/meraj-hassan-a54383404/"
+         target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="mailto:merajqadri0101@gmail.com">Email ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="gradient-orb"></div>
+
+    <div class="visual-card">
+      <div class="visual-top">
+        <span class="visual-label">CURRENT FOCUS</span>
+        <span class="visual-status">● Available for work</span>
+      </div>
+
+      <div class="video-screen">
+        <div class="play-circle">▶</div>
+      </div>
+
+      <div class="timeline">
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="visual-bottom">
+        <div>
+          <div class="visual-title">AI UGC Ads</div>
+          <div class="visual-subtitle">Creative Video Editing</div>
+        </div>
+        <div class="visual-number">01</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-label">01 — ABOUT ME</div>
+
+  <div class="about-grid">
+    <div>
+      <h2 class="about-title">
+        Creative editing with a focus on <span>impact.</span>
+      </h2>
+    </div>
+
+    <div>
+      <div class="about-text">
+        <p>I help creators, brands and businesses turn raw footage and ideas into polished, engaging content that is ready to publish.</p>
+        <p>My work focuses on pacing, clean cuts, visual flow, attention-grabbing hooks and creating an overall professional feel.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><strong>28+</strong><span>Portfolio Videos</span></div>
+        <div class="stat"><strong>UGC</strong><span>Ad Editing</span></div>
+        <div class="stat"><strong>100%</strong><span>Creative Focus</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services-section" id="services">
+  <div class="section-label">02 — SERVICES</div>
+  <h2 class="section-heading">What I can do <span>for you.</span></h2>
+
+  <div class="service-grid">
+    <article class="service">
+      <div class="service-icon">🎬</div>
+      <h3>Video Editing</h3>
+      <p>Professional editing, smooth cuts, transitions, pacing and visual storytelling for creators and brands.</p>
+    </article>
+
+    <article class="service">
+      <div class="service-icon">🤖</div>
+      <h3>AI UGC Ads</h3>
+      <p>Attention-grabbing AI UGC advertisements designed for social media campaigns and product promotion.</p>
+    </article>
+
+    <article class="service">
+      <div class="service-icon">📱</div>
+      <h3>Social Media Content</h3>
+      <p>Short-form videos, reels and engaging content tailored for modern social media platforms.</p>
+    </article>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="portfolio-header">
+    <div>
+      <div class="section-label">03 — SELECTED WORK</div>
+      <h2 class="section-heading">Watch the <span>work.</span></h2>
+      <p class="section-intro">Explore my video editing projects by category. Open any video to watch it on Google Drive.</p>
+    </div>
+
+    <a class="portfolio-link"
+       href="mailto:merajqadri0101@gmail.com">Have a project? Let's talk ↗</a>
+  </div>
+
+  <div class="portfolio-category-nav" id="catnav"></div>
+  <div id="portfolioCategories"></div>
+</section>
+
+<section class="process-section" id="process">
+  <div class="section-label">04 — MY PROCESS</div>
+  <h2 class="section-heading">From idea to <span>final cut.</span></h2>
+  <p class="section-intro">A simple, collaborative process that keeps every project focused and organized.</p>
+
+  <div class="process-grid">
+    <article class="process">
+      <div class="process-number">STEP 01</div>
+      <h3>Brief</h3>
+      <p>We discuss your goals, target audience, style and project requirements.</p>
+    </article>
+
+    <article class="process">
+      <div class="process-number">STEP 02</div>
+      <h3>Plan</h3>
+      <p>I organize the footage, establish the editing direction and plan the flow.</p>
+    </article>
+
+    <article class="process">
+      <div class="process-number">STEP 03</div>
+      <h3>Edit</h3>
+      <p>I craft the edit with clean pacing, transitions, sound and visual polish.</p>
+    </article>
+
+    <article class="process">
+      <div class="process-number">STEP 04</div>
+      <h3>Deliver</h3>
+      <p>You receive the final video, ready for your platform or campaign.</p>
+    </article>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-box">
+    <div>
+      <div class="contact-label">HAVE A PROJECT IN MIND?</div>
+      <h2>Let's make<br><span>something great.</span></h2>
+      <p>Tell me what you're working on. Let's create content that gets noticed.</p>
+    </div>
+
+    <div class="contact-actions">
+      <button class="contact-button" type="button"
+              onclick="document.getElementById('chatToggle').click()">
+        Start a Conversation ↗
+      </button>
+      <a class="contact-email"
+         href="mailto:merajqadri0101@gmail.com">merajqadri0101@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© <span id="year"></span> <strong>Zahoor ul Hassan</strong>. All rights reserved.</div>
+
+  <div class="footer-links">
+    <a href="#home">Back to top ↑</a>
+    <a href="https://www.upwork.com/freelancers/~01cebcfc859dd4232c"
+       target="_blank" rel="noopener">Upwork ↗</a>
+    <a href="https://www.linkedin.com/in/syed-muhammad-zahoor-ul-hassan-8484963b1/"
+       target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+</footer>
+
+<!-- CHAT WINDOW -->
+<div class="chat-window" id="chatWindow"
+     aria-hidden="true" role="dialog"
+     aria-label="Contact chat">
+
+  <div class="chat-header">
+    <div>
+      <strong>Let's Talk 👋</strong>
+      <p>Tell me about your project.</p>
+    </div>
+    <button type="button" id="chatClose"
+            aria-label="Close chat">×</button>
+  </div>
+
+  <div class="chat-body">
+    <div class="chat-message">
+      Hi! I'm Syed Muhammad Miraj.
+      Please share your name and project details.
+    </div>
+  </div>
+
+  <form class="chat-form" id="chatForm">
+    <input type="hidden" name="access_key"
+           value="dd6417ac-2cfc-4a37-bda2-633c6a64e649">
+
+    <input type="hidden" name="subject"
+           value="New Portfolio Message - Syed Muhammad Miraj">
+
+    <input type="text" name="name"
+           placeholder="Your name"
+           maxlength="100" required>
+
+    <input type="email" name="email"
+           placeholder="Your email address"
+           maxlength="254" required>
+
+    <textarea name="message"
+              placeholder="Tell me about your project..."
+              maxlength="3000" required></textarea>
+
+    <input type="checkbox" name="botcheck"
+           style="display:none">
+
+    <p id="chatFormStatus"
+       role="status"
+       aria-live="polite"></p>
+
+    <button type="submit" id="chatSubmitButton">
+      Send Message ↗
+    </button>
+  </form>
+</div>
+
+<!-- FLOATING CHAT BUTTON -->
+<button class="chat-toggle" id="chatToggleFloat"
+        type="button"
+        aria-label="Open chat"
+        aria-controls="chatWindow"
+        aria-expanded="false">
+  <span class="chat-icon">💬</span>
+</button>
+<!-- MOUSE TRAIL ANIMATION SCRIPT -->
+<script>
+(function () {
+  const canvas = document.getElementById('mouseTrailCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let particles = [];
+  const mouse = { x: width / 2, y: height / 2 };
+
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * window.devicePixelRatio;
+    canvas.height = height * window.devicePixelRatio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(
+      window.devicePixelRatio, 0, 0,
+      window.devicePixelRatio, 0, 0
+    );
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  window.addEventListener('mousemove', function (e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+    for (let i = 0; i < 3; i++) {
+      particles.push({
+        x: mouse.x,
+        y: mouse.y,
+        size: Math.random() * 4 + 2,
+        speedX: (Math.random() - 0.5) * 1.5,
+        speedY: (Math.random() - 0.5) * 1.5,
+        color: Math.random() > 0.5 ? '#f5a524' : '#2dd4bf',
+        alpha: 1,
+        decay: Math.random() * 0.03 + 0.015
+      });
+    }
+
+    if (particles.length > 250) {
+      particles.splice(0, particles.length - 250);
+    }
+  });
+
+  window.addEventListener('click', function (e) {
+    for (let i = 0; i < 20; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 4 + 1;
+
+      particles.push({
+        x: e.clientX,
+        y: e.clientY,
+        size: Math.random() * 5 + 2,
+        speedX: Math.cos(angle) * speed,
+        speedY: Math.sin(angle) * speed,
+        color: '#ff6b57',
+        alpha: 1,
+        decay: Math.random() * 0.02 + 0.01
+      });
+    }
+
+    if (particles.length > 250) {
+      particles.splice(0, particles.length - 250);
+    }
+  });
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
+</script>
+
+<!-- PORTFOLIO VIDEO CATEGORIES -->
+<script>
+const categories = [
+  [
+    "AI UGC AD",
+    [
+      "1s6X447hW72SAtin-pbDvHdk2uAL8MfdH",
+      "1SZFyv3Y8DCDVJUFk5JOIcG0Zy7iA5rwl",
+      "1SygjxFhcdukPc70kjS6OPSrIVJG1OuEH",
+      "1VOe6ab9Tho9t4-Vy28OXjnx0AWstLpJE",
+      "1Tm16Jf3ia7rpevR0aovYBXvmIkiNu_ax"
+    ],
+    "AI UGC advertising video edited for strong hooks, pacing and viewer attention."
+  ],
+  [
+    "AI ADS",
+    [
+      "1lWbJB-DoHKNzOUomzsu0XMs05hlv56oI",
+      "1WE3SoVNvZAf-_HZIXkKVLO0DZMsIRXdP"
+    ],
+    "AI-powered advertising content with clean edits and engaging visual flow."
+  ],
+  [
+    "UGC ADS",
+    [
+      "1YB6-by5t7YMGGs7lL4Oa8dvitcDktLrV",
+      "14a-rI8xweAUIQiLWiLtuVOeSpd0o5H_p"
+    ],
+    "UGC-style advertising content built for social media and paid campaigns."
+  ],
+  [
+    "AI UGC E-COMMERCE",
+    [
+      "1eeRGxeMk6ix09_0hpyGFUkw1JaEiLqXU"
+    ],
+    "AI UGC product content designed for e-commerce presentation."
+  ],
+  [
+    "E-COMMERCE",
+    [
+      "10DizKvuy6sbgufMMvtsQ7C7By8UQ5xrk"
+    ],
+    "Product-focused e-commerce video with a clean advertising style."
+  ],
+  [
+    "DUCH ADS",
+    [
+      "15gsU5CEitIpx3wearkMj3gu4_BjV-82Q"
+    ],
+    "Advertising video edited for clear messaging and audience engagement."
+  ],
+  [
+    "E-COMMERCE PRODUCT AD",
+    [
+      "1bvbWVNrLG_VhiQr0IXmcsrFd1Bi5guxy"
+    ],
+    "Product advertising content designed to highlight features and value."
+  ],
+  [
+    "FASHION BRAND VIDEO",
+    [
+      "1aEWrM79etr6csQ9xxwGoqLd_YzGo-r9x",
+      "1xIj_2yroVW_2LExpZTxaRbO6Lill6NCZ",
+      "17CSwAG2JI1nhFJhY08eObDrr2SMMebt6"
+    ],
+    "Fashion brand content with polished visuals and professional presentation."
+  ],
+  [
+    "BRAND ADS",
+    [
+      "1AfF0ckChvowycChO5ZKIeWufsAj9wFSy",
+      "1YRkrJbAvv4n10KWqICwzsncL_5AfE5Yx",
+      "1Zr9rpeZJxuEAXNcFH43sRcXIHiIBThB0",
+      "1njK5H41d1iafjpRVEoTxa_VUpdzJU4hg",
+      "1vUC9IyxhDmV9kurB8JdDrFShxF_oaHxf",
+      "1E2b0CHLPzPGCaurOdP-CRHWJyYw91RvT",
+      "1a0m_AYQRHNy_Mrgfna5eqDUDa3nzo9gg",
+      "1DNBoRupx0FtRNPLvNRU7F3VcUGSbAXsH"
+    ],
+    "Brand advertising content edited for professional presentation and social media."
+  ],
+  [
+    "META ADS",
+    [
+      "1rXQBVv5CUSnmlgFbwLN2e0J7minQJeOs",
+      "1d08XT88r0UQ5dW_Y40zWfkuBOSBWFPgE",
+      "1ZVszdE-R4_2wlZETzR2fE5NRpobgvWM4"
+    ],
+    "Meta advertising creatives designed for attention and clarity."
+  ],
+  [
+    "UGC E-COMMERCE",
+    [
+      "1VCRHLYA5m4cKK8n51loI-_5XM1N2C3wo"
+    ],
+    "UGC e-commerce content focused on product presentation and engagement."
+  ]
+];
+
+function slug(text) {
+  return text.toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+const nav = document.getElementById("catnav");
+const root = document.getElementById("portfolioCategories");
+
+let globalNo = 1;
+
+categories.forEach(([name, ids, description]) => {
+  const sectionId = "cat-" + slug(name);
+
+  const categoryLink = document.createElement("a");
+  categoryLink.href = "#" + sectionId;
+  categoryLink.textContent = name;
+  nav.appendChild(categoryLink);
+
+  const section = document.createElement("div");
+  section.className = "portfolio-category-section";
+  section.id = sectionId;
+
+  section.innerHTML = `
+    <div class="category-heading">
+      <h3>${name}</h3>
+      <span>${ids.length} ${ids.length === 1 ? "video" : "videos"}</span>
+    </div>
+    <div class="portfolio-grid"></div>
+  `;
+
+  const grid = section.querySelector(".portfolio-grid");
+
+  ids.forEach((id, index) => {
+    const videoNumber = String(globalNo++).padStart(2, "0");
+
+    const title = name.split(" ")
+      .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+      .join(" ") + " " + String(index + 1).padStart(2, "0");
+
+    const article = document.createElement("article");
+    article.className = "project";
+
+    article.innerHTML = `
+      <div class="project-preview">
+        <iframe
+          class="portfolio-embed"
+          src="https://drive.google.com/file/d/${id}/preview"
+          title="${title}"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+        <div class="preview-number">VIDEO ${videoNumber}</div>
+      </div>
+
+      <div class="project-info">
+        <div class="project-category">${name}</div>
+        <h3>${title}</h3>
+        <p>${description}</p>
+        <a
+          class="watch-btn"
+          href="https://drive.google.com/file/d/${id}/view"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open Video ↗
+        </a>
+      </div>
+    `;
+
+    grid.appendChild(article);
+  });
+
+  root.appendChild(section);
+});
+</script>
+<!-- SCROLL ANIMATIONS + CHAT BOX -->
+<script>
+(function () {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const progressBar = document.getElementById("scrollProgress");
+
+  /* Scroll progress bar */
+  if (progressBar && !reduceMotion) {
+    let ticking = false;
+
+    function updateProgress() {
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const progress = scrollHeight > 0
+        ? Math.min(window.scrollY / scrollHeight, 1)
+        : 0;
+
+      progressBar.style.transform = `scaleX(${progress})`;
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateProgress);
+      }
+    }, { passive: true });
+
+    updateProgress();
+  }
+
+  /* Reveal animations */
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("js");
+
+    document.querySelectorAll(
+      "section, .service, .project, .process, .stat"
+    ).forEach(element => {
+      element.classList.add("reveal");
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    document.querySelectorAll(".reveal").forEach(element => {
+      observer.observe(element);
+    });
+  }
+
+  /* CHAT BOX */
+  const chatWindow = document.getElementById("chatWindow");
+
+  const chatButtons = [
+    document.getElementById("chatToggle"),
+    document.getElementById("chatToggleFloat")
+  ].filter(Boolean);
+
+  const closeButton = document.getElementById("chatClose");
+
+  /* Open chat */
+  function openChat() {
+    if (!chatWindow) return;
+
+    chatWindow.classList.add("active");
+    chatWindow.setAttribute("aria-hidden", "false");
+
+    chatButtons.forEach(button => {
+      button.setAttribute("aria-expanded", "true");
+    });
+
+    window.setTimeout(() => {
+      const nameInput = chatWindow.querySelector('[name="name"]');
+
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 180);
+  }
+
+  /* Close chat */
+  function closeChat() {
+    if (!chatWindow) return;
+
+    chatWindow.classList.remove("active");
+    chatWindow.setAttribute("aria-hidden", "true");
+
+    chatButtons.forEach(button => {
+      button.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  /* Both Let's Talk buttons */
+  chatButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      if (chatWindow && chatWindow.classList.contains("active")) {
+        closeChat();
+      } else {
+        openChat();
+      }
+    });
+  });
+
+  /* Close with X button */
+  if (closeButton) {
+    closeButton.addEventListener("click", closeChat);
+  }
+
+  /* Close by pressing Escape */
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeChat();
+    }
+  });
+
+  /* Close when clicking outside the chat */
+  document.addEventListener("click", function (event) {
+    if (!chatWindow || !chatWindow.classList.contains("active")) {
+      return;
+    }
+
+    const clickedInsideChat = chatWindow.contains(event.target);
+
+    const clickedToggle = chatButtons.some(button =>
+      button.contains(event.target)
+    );
+
+    if (!clickedInsideChat && !clickedToggle) {
+      closeChat();
+    }
+  });
+
+  /* Contact form */
+  const chatForm = document.getElementById("chatForm");
+
+  if (chatForm) {
+    chatForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const status = document.getElementById("chatFormStatus");
+      const submitButton = document.getElementById("chatSubmitButton");
+
+      if (!status || !submitButton || submitButton.disabled) return;
+
+      const nameField = chatForm.querySelector('[name="name"]');
+      const emailField = chatForm.querySelector('[name="email"]');
+      const messageField = chatForm.querySelector('[name="message"]');
+      const accessKeyField = chatForm.querySelector('[name="access_key"]');
+
+      const accessKey = accessKeyField
+        ? accessKeyField.value.trim()
+        : "";
+
+      /* Trim input values */
+      if (nameField) nameField.value = nameField.value.trim();
+      if (emailField) emailField.value = emailField.value.trim();
+      if (messageField) messageField.value = messageField.value.trim();
+
+      if (!chatForm.reportValidity()) return;
+
+      if (
+        !nameField ||
+        !emailField ||
+        !messageField ||
+        !nameField.value ||
+        !emailField.value ||
+        !messageField.value
+      ) {
+        status.textContent =
+          "Please complete all fields before sending.";
+        return;
+      }
+
+      /* Honeypot spam check */
+      const honeypot = chatForm.querySelector('[name="botcheck"]');
+
+      if (honeypot && honeypot.checked) {
+        status.textContent =
+          "Your message could not be sent. Please try again.";
+        return;
+      }
+
+      /* Check Web3Forms access key */
+      if (
+        !accessKey ||
+        accessKey === "YOUR_WEB3FORMS_ACCESS_KEY"
+      ) {
+        status.textContent =
+          "Please configure the Web3Forms access key first.";
+        return;
+      }
+
+      status.textContent = "Sending your message...";
+      submitButton.disabled = true;
+
+      try {
+        const response = await fetch(
+          "https://api.web3forms.com/submit",
+          {
+            method: "POST",
+            body: new FormData(chatForm),
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+        let result = {};
+
+        try {
+          result = await response.json();
+        } catch (_) {
+          result = {};
+        }
+
+        if (response.ok && result.success === true) {
+          status.textContent =
+            "Message sent successfully! Thank you.";
+
+          chatForm.reset();
+        } else {
+          status.textContent =
+            result.message ||
+            "Message could not be sent. Please check your connection and try again.";
+        }
+      } catch (error) {
+        status.textContent =
+          "Connection error. Please try again.";
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  }
+
+  /* Automatically update copyright year */
+  const yearElement = document.getElementById("year");
+
+  if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+  }
+})();
+</script>
+
+</body>
+</html>
